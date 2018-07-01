@@ -43,6 +43,9 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<String> getRolesByUserName(String userName) {
 		String sql = "select roleName from test_users_roles where user_name = ?";
+
+		String sql2 = "select * from users where username = ?";
+
 		List<String> list = jdbcTemplate.query(sql, new String[]{userName}, new RowMapper<String>(){
 			@Override
 			public String mapRow(ResultSet resultSet, int i) throws SQLException {
