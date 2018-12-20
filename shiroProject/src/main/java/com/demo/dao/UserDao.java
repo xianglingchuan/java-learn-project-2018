@@ -1,12 +1,16 @@
 package com.demo.dao;
 
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.demo.entity.User;
 
+import java.util.List;
+
+/**
+ *
+ * UserDao
+ * 使用自定义数据表管理用户信息
+ *
+ */
 public interface UserDao {
 
 	User getPasswordByUserName(String userName);

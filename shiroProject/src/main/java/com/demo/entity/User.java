@@ -1,5 +1,10 @@
 package com.demo.entity;
 
+/**
+ *
+ * 用户基本信息实体类
+ *
+ */
 public class User {
 
 	private String username;

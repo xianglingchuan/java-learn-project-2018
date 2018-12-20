@@ -1,35 +1,50 @@
 package com.demo.session;
 
+import com.demo.util.JedisUtil;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
+import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
+import org.apache.shiro.util.CollectionUtils;
+import org.springframework.util.SerializationUtils;
+
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Resource;
-import javax.swing.AbstractAction;
 
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
-import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
-import org.apache.shiro.util.CollectionUtils;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.util.SerializationUtils;
 
-import com.demo.util.JedisUtil;
-
+/**
+ *
+ * RedisSessionDao操作类
+ *
+ */
 public class RedisSessionDao extends AbstractSessionDAO {
-
+	
 	@Resource
 	private JedisUtil jedisUtil;
 
+	/**
+	 * session缓存前端标记
+	 */
 	private final String SHIRO_SESSION_PREFIX = "demo-session:";
+	
 
-	//获取SessionKey值信息
+	/**
+	 * 获取SessionKey值信息
+	 * @param key
+	 * @return byte[]
+	 */
 	private byte[] getKey(String key){
 		return (SHIRO_SESSION_PREFIX+key).getBytes();
 	}
 
-	//保存session
+	/**
+	 * 保存session
+	 * @param session
+	 * @return void
+	 */
 	private void saveSession(Session session){
 		if(session!=null && session.getId()!=null){
 			byte[] key = getKey(session.getId().toString());
@@ -39,11 +54,12 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		}
 	}
 
-
+	@Override
 	public void update(Session session) throws UnknownSessionException {
-		saveSession(session);
+		saveSession(session);		
 	}
 
+	@Override
 	public void delete(Session session) {
 		if(session==null || session.getId()==null){
 			return;
@@ -52,7 +68,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		jedisUtil.del(key);
 	}
 
-
+	@Override
 	public Collection<Session> getActiveSessions() {
 		Set<byte[]> keys = jedisUtil.keys(SHIRO_SESSION_PREFIX);
 		Set<Session> sessions = new HashSet<Session>();
@@ -66,7 +82,12 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		return sessions;
 	}
 
-	//序列化session信息
+
+	/**
+	 * 序列化session信息
+	 * @param session
+	 * @return Serializable
+	 */
 	@Override
 	protected Serializable doCreate(Session session) {
 		Serializable sessionId = generateSessionId(session);
@@ -75,6 +96,11 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		return sessionId;
 	}
 
+	/**
+	 * 反序列化session信息
+	 * @param sessionId
+	 * @return Session
+	 */
 	@Override
 	protected Session doReadSession(Serializable sessionId) {
 	     System.out.println("doReadSession ");
@@ -85,7 +111,6 @@ public class RedisSessionDao extends AbstractSessionDAO {
 	     byte[] value = jedisUtil.get(key);
 	     return (Session) SerializationUtils.deserialize(value);
 	}
-
 }
 
 

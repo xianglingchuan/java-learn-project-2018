@@ -1,3 +1,4 @@
 .idea
-shiroProject/target
 testProject/target
+out
+shiroProject/target
