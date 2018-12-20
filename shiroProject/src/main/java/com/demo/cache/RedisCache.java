@@ -15,23 +15,22 @@ import com.demo.util.JedisUtil;
 
 @Component
 public class RedisCache<K,V> implements Cache<K, V> {
-	
+
 	@Resource
 	private JedisUtil jedisUtil;
-	
-	
+
 	private final String CACHE_PREFIX = "demo-cache";
-	
+
 	private byte[] getKey(K k){
 		if(k instanceof String){
 			return (CACHE_PREFIX+k).getBytes();
 		}
 		return SerializationUtils.serialize(k);
-		
-	}
-	
 
-	@Override
+	}
+
+
+
 	public V get(K key) throws CacheException {
 		System.out.println("从redis获取权限数据");
 		byte[] value = jedisUtil.get(getKey(key));
@@ -41,7 +40,7 @@ public class RedisCache<K,V> implements Cache<K, V> {
 		return null;
 	}
 
-	@Override
+
 	public V put(K key, V value) throws CacheException {
 		byte[] keyByte = getKey(key);
 		byte[] valueByte = SerializationUtils.serialize(value);
@@ -50,7 +49,7 @@ public class RedisCache<K,V> implements Cache<K, V> {
 		return value;
 	}
 
-	@Override
+
 	public V remove(K key) throws CacheException {
 		byte[] keyByte = getKey(key);
 		byte[] valueByte = jedisUtil.get(keyByte);
@@ -61,23 +60,23 @@ public class RedisCache<K,V> implements Cache<K, V> {
 		return null;
 	}
 
-	@Override
+
 	public void clear() throws CacheException {
 		//最好不要实现，因为这里清空的是整个Reids中的内容
-		
+
 	}
 
-	@Override
+
 	public int size() {
 		return 0;
 	}
 
-	@Override
+
 	public Set<K> keys() {
 		return null;
 	}
 
-	@Override
+
 	public Collection<V> values() {
 		return null;
 	}

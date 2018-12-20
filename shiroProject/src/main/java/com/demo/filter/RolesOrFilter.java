@@ -10,7 +10,7 @@ public class RolesOrFilter extends AuthorizationFilter {
 
 	@Override
 	protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object arg2) throws Exception {
-		
+
 		System.out.println("isAccessAllowed........");
 		Subject subject = getSubject(servletRequest, servletResponse);
 		String[] roles = (String[]) arg2;

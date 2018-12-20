@@ -13,12 +13,12 @@ import org.apache.shiro.web.session.mgt.WebSessionKey;
 public class CustomSessionManager extends DefaultWebSessionManager {
 
     protected Session retrieveSession(SessionKey sessionKey) throws UnknownSessionException {
-    	
+
     	Serializable sessionId = getSessionId(sessionKey);
     	ServletRequest request = null;
-    	
+
     	if(sessionKey instanceof WebSessionKey){
-        	request = ((WebSessionKey)sessionKey).getServletRequest();    		
+        	request = ((WebSessionKey)sessionKey).getServletRequest();
     	}
     	if(request!=null && sessionId!=null){
     		Session session =  (Session) request.getAttribute(sessionId.toString());
@@ -31,31 +31,31 @@ public class CustomSessionManager extends DefaultWebSessionManager {
     		request.setAttribute(sessionId.toString(), session);
     	}
     	return session;
-    }	
-	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

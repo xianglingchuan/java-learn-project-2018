@@ -18,17 +18,17 @@ import org.springframework.util.SerializationUtils;
 import com.demo.util.JedisUtil;
 
 public class RedisSessionDao extends AbstractSessionDAO {
-	
+
 	@Resource
 	private JedisUtil jedisUtil;
-	
+
 	private final String SHIRO_SESSION_PREFIX = "demo-session:";
-	
+
 	//获取SessionKey值信息
 	private byte[] getKey(String key){
 		return (SHIRO_SESSION_PREFIX+key).getBytes();
 	}
-	
+
 	//保存session
 	private void saveSession(Session session){
 		if(session!=null && session.getId()!=null){
@@ -38,15 +38,12 @@ public class RedisSessionDao extends AbstractSessionDAO {
 			jedisUtil.expire(key, 600);
 		}
 	}
-	
-	
 
-	@Override
+
 	public void update(Session session) throws UnknownSessionException {
-		saveSession(session);		
+		saveSession(session);
 	}
 
-	@Override
 	public void delete(Session session) {
 		if(session==null || session.getId()==null){
 			return;
@@ -55,7 +52,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		jedisUtil.del(key);
 	}
 
-	@Override
+
 	public Collection<Session> getActiveSessions() {
 		Set<byte[]> keys = jedisUtil.keys(SHIRO_SESSION_PREFIX);
 		Set<Session> sessions = new HashSet<Session>();
