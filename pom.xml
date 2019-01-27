@@ -13,5 +13,6 @@
         <module>testProject</module>
         <module>zookeeperProject</module>
         <module>shiroProject</module>
+        <module>hadoopProject</module>
     </modules>
 </project>
