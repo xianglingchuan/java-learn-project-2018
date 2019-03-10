@@ -14,5 +14,6 @@
         <module>zookeeperProject</module>
         <module>shiroProject</module>
         <module>hadoopProject</module>
+        <module>jarProject</module>
     </modules>
 </project>
